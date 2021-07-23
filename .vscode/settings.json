@@ -1,0 +1,76 @@
+{
+  // "extensions.autoUpdate": false,
+  // "telemetry.enableTelemetry": false,
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "files.autoSave": "onFocusChange",
+  "workbench.startupEditor": "none",
+  "window.zoomLevel": 0.1, //全視窗縮放的比例
+  "workbench.tree.indent": 20, //檔案總管的樹列縮排
+  "telemetry.enableCrashReporter": false,
+  "workbench.sideBar.location": "right",
+  "workbench.editor.enablePreview": true, //檔案總管或搜尋時始終打開預覽新文件
+  "search.followSymlinks": false, //關閉rg.exe進程
+  "editor.minimap.enabled": false,
+  "editor.mouseWheelZoom": true, //開啟滑鼠縮放
+  "editor.rulers": [
+    180
+  ], //配置換行提醒垂直标尺長度
+  "editor.renderIndentGuides": true, // 開啟縮排導引線
+  "editor.fontSize": 15, //設置文字大小
+  "editor.lineHeight": 24, //設置文字行高
+  "editor.lineNumbers": "on", //開啟行數提示
+  // "editor.quickSuggestions": {
+  //   "other": true,
+  //   "comments": true,
+  //   "strings": true
+  // }, //開啟自動顯示建議
+  // "editor.tabSize": 5, //Tab的空格數
+  "editor.formatOnSave": true, //儲存自動修正
+  // "html.format.wrapAttributes": "force-expand-multiline", //讓屬性強制換行
+  // "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  //【highlightLine】
+  "highlightLine.borderStyle": "solid",
+  "highlightLine.borderWidth": "2px",
+  "highlightLine.borderColor": "yellow",
+  //【eslint】
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    //儲存自動修正 // 每次保存的時候將代碼按eslint格式進行修復
+    "source.fixAll": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue",
+  ],
+  //【emmet】
+  "emmet.triggerExpansionOnTab": true,
+  // "emmet.includeLanguages": {
+  //   "vue-html": "html",
+  //   "vue": "html"
+  // },
+  // "emmet.syntaxProfiles": {
+  //   "vue-html": "html",
+  //   "vue": "html"
+  // }
+  //【vetur】
+  // "vetur.format.options.tabSize": 2,
+  // "vetur.validation.template": false,
+  // "vetur.format.scriptInitialIndent": true, // js默認偏移一個縮排
+  // "vetur.format.styleInitialIndent": true, // style默認偏移一個縮排
+  // "vetur.format.defaultFormatter.html": "js-beautify-html", //格式化.vue中html
+  // "vetur.format.defaultFormatter.js": "vscode-typescript", //讓vue中的js按編輯器自帶的ts格式進行格式化
+  // "vetur.format.defaultFormatterOptions": {
+  //   "js-beautify-html": {
+  //     "wrap_attributes": "force-aligned" //屬性強制折行對齊
+  //   }
+  // },
+  //【prettier】
+  // tabWidth: 3, //一個tab代表幾個空格數，默認為80
+  // useTabs: false, //是否使用tab進行縮進，默認為false，表示用空格進行縮減
+  // trailingComma: "es5", //是否使用尾逗號，有三個可選值"<none|es5|all>"
+  // bracketSpacing: true, //對象大括號直接是否有空格，默認為true，效果：{ foo: bar }
+  // "prettier.printWidth": 180, //一行的字符數，如果超過會進行換行，默認為80
+  // "prettier.semi": false, //行位是否使用分號，默認為true
+  // "prettier.singleQuote": true, //字符串是否使用單引號，默認為false，使用雙引號
+}

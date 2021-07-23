@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-rename-tag",
+        "alefragnani.bookmarks",
+        "coenraads.bracket-pair-colorizer-2",
+        "cliffordfajardo.highlight-line-vscode",
+        "hollowtree.vue-snippets",
+        "eamodio.gitlens",
+        "donjayamanne.githistory"
+    ]
+}
