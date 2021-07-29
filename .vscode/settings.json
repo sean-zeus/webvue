@@ -1,33 +1,60 @@
 {
+  //是否自動update vs code外掛(只能全域設定)
   // "extensions.autoUpdate": false,
+  //啟動時是否開啟telemetry(只能全域設定)
   // "telemetry.enableTelemetry": false,
+  //顯示特殊字元
+  "editor.renderControlCharacters": true,
+  //顯示空白字元
+  "editor.renderWhitespace": "all",
+  // 更改字體
+  "editor.fontFamily": "'Fira Code', 'Source Code Pro', Consolas, 'Microsoft JhengHei'",
+  // 開啟連字符號
+  "editor.fontLigatures": true,
+  // 刪除檔案時確認
+  "explorer.confirmDelete": false,
+  // git 自動 fetch
+  "git.autofetch": true,
+  // 拖曳移動檔案不彈出確認視窗
+  "explorer.confirmDragAndDrop": false,
+  // 將 Terminal 修改為 CMD Bash
   "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  // 切換視窗自動儲存
   "files.autoSave": "onFocusChange",
   "workbench.startupEditor": "none",
-  "window.zoomLevel": 0.1, //全視窗縮放的比例
-  "workbench.tree.indent": 20, //檔案總管的樹列縮排
+  //全視窗縮放的比例
+  "window.zoomLevel": 0.1,
+  //檔案總管的樹列縮排
+  "workbench.tree.indent": 20,
   "telemetry.enableCrashReporter": false,
   "workbench.sideBar.location": "right",
-  "workbench.editor.enablePreview": true, //檔案總管或搜尋時始終打開預覽新文件
-  "search.followSymlinks": false, //關閉rg.exe進程
+  //檔案總管或搜尋時始終打開預覽新文件
+  "workbench.editor.enablePreview": true,
+  //關閉rg.exe進程(影響效能)
+  "search.followSymlinks": false,
   "editor.minimap.enabled": false,
   "editor.mouseWheelZoom": true, //開啟滑鼠縮放
+  //配置換行提醒垂直标尺長度
   "editor.rulers": [
     180
-  ], //配置換行提醒垂直标尺長度
+  ],
   "editor.renderIndentGuides": true, // 開啟縮排導引線
-  "editor.fontSize": 15, //設置文字大小
+  "editor.fontSize": 16, //設置文字大小
   "editor.lineHeight": 24, //設置文字行高
   "editor.lineNumbers": "on", //開啟行數提示
-  // "editor.quickSuggestions": {
-  //   "other": true,
-  //   "comments": true,
-  //   "strings": true
-  // }, //開啟自動顯示建議
-  // "editor.tabSize": 5, //Tab的空格數
-  "editor.formatOnSave": true, //儲存自動修正
-  // "html.format.wrapAttributes": "force-expand-multiline", //讓屬性強制換行
+  //開啟自動顯示建議
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  //Tab的空格數
+  // "editor.tabSize": 5, 
+  //讓屬性強制換行
+  // "html.format.wrapAttributes": "force-expand-multiline", 
+  //让函数(名)和后面的括号之间加个空格
   // "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "editor.formatOnSave": true, //儲存自動修正
   //【highlightLine】
   "highlightLine.borderStyle": "solid",
   "highlightLine.borderWidth": "2px",
@@ -41,7 +68,8 @@
   "eslint.validate": [
     "javascript",
     "javascriptreact",
-    "vue",
+    "html",
+    "vue"
   ],
   //【emmet】
   "emmet.triggerExpansionOnTab": true,
@@ -54,17 +82,27 @@
   //   "vue": "html"
   // }
   //【vetur】
+  // "vetur.format.options.useTabs": true,
   // "vetur.format.options.tabSize": 2,
-  // "vetur.validation.template": false,
-  // "vetur.format.scriptInitialIndent": true, // js默認偏移一個縮排
-  // "vetur.format.styleInitialIndent": true, // style默認偏移一個縮排
-  // "vetur.format.defaultFormatter.html": "js-beautify-html", //格式化.vue中html
-  // "vetur.format.defaultFormatter.js": "vscode-typescript", //讓vue中的js按編輯器自帶的ts格式進行格式化
-  // "vetur.format.defaultFormatterOptions": {
-  //   "js-beautify-html": {
-  //     "wrap_attributes": "force-aligned" //屬性強制折行對齊
-  //   }
-  // },
+  // "vetur.validation.template": false,// Vetur 不驗證模板
+  "vetur.format.scriptInitialIndent": true, // js默認偏移一個縮排
+  "vetur.format.styleInitialIndent": true, // style默認偏移一個縮排
+  // "vetur.format.defaultFormatter.js": "none", // 禁用vetur的JS格式化，交给eslint处理
+  "vetur.format.defaultFormatter.js": "prettier-eslint", //讓vue中的js按eslint格式進行格式化
+  "vetur.format.defaultFormatter.html": "prettyhtml", //使用prettyhtml格式化.vue中html
+  "vetur.format.defaultFormatterOptions": { //prettyhtml的格式化設定
+    "prettyhtml": {
+      "printWidth": 180, // 单行超过100个长度的时候开始换行
+      // "tabWidth": 2,
+      // "useTabs": false,
+      "singleQuote": false, //使用單引號
+      "wrapAttributes": false, //多屬性強迫換行
+      "sortAttributes": false //按字母順序排序屬性
+    }
+    // "js-beautify-html": {
+    //   "wrap_attributes": "force-aligned" //屬性強制折行對齊
+    // }
+  },
   //【prettier】
   // tabWidth: 3, //一個tab代表幾個空格數，默認為80
   // useTabs: false, //是否使用tab進行縮進，默認為false，表示用空格進行縮減

@@ -8,6 +8,7 @@
         "cliffordfajardo.highlight-line-vscode",
         "hollowtree.vue-snippets",
         "eamodio.gitlens",
-        "donjayamanne.githistory"
+        "donjayamanne.githistory",
+        "rangav.vscode-thunder-client"
     ]
 }
