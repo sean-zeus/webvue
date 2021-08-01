@@ -1,0 +1,59 @@
+@import '~iview/src/styles/index.less';
+
+@layout-sider-background: #31022d;
+@menu-dark-title: #31022d;
+@menu-dark-active-bg: #350230;
+
+// seanzeus
+@border-color-base: #c3cbd3; // outside
+@border-color-split: #c3cbd3; // inside
+@table-thead-bg: rgb(114, 113, 113);
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu),
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu) {
+  color: #fff;
+  background: #f02d57 !important;
+}
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active,
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active:hover {
+  border-right: none;
+  color: #fff;
+  background: #f02d57 !important;
+}
+
+.ivu-table th {
+  text-align: center;
+  color: white;
+}
+
+.ivu-table-cell {
+  padding-left: 12px;
+  padding-right: 12px;
+  // margin: 0px;
+}
+
+.ivu-drawer-header {
+  font-weight: bold;
+  text-align: center;
+  background: rgb(204, 224, 199);
+  margin-bottom: 10px;
+}
+
+.ivu-drawer-body {
+  // height: calc(100% - 55px);
+  // overflow: auto;
+  padding-bottom: 70px;
+  position: static;
+}
+
+.sean-drawer-footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 2px solid #e8e8e8;
+  padding: 20px 30px 20px 30px;
+  text-align: left;
+  background: #fff;
+}

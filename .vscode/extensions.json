@@ -9,6 +9,7 @@
         "hollowtree.vue-snippets",
         "eamodio.gitlens",
         "donjayamanne.githistory",
-        "rangav.vscode-thunder-client"
+        "rangav.vscode-thunder-client",
+        "ionutvmi.path-autocomplete"
     ]
 }
