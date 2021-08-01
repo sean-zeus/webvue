@@ -46,6 +46,6 @@
     ]
   },
   "gitHooks": {
-    "pre-commit –no-verify": "lint-staged"
+    "pre-commit–no-verify": "lint-staged"
   }
 }
