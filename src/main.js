@@ -6,13 +6,14 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 
 // ----------------iview-admin-template------------------------------------------------
-import '@/helpers/iview-admin/libs/DatePrototype.js' // 對Date的擴充套件，將 Date 轉化為指定格式的String
+// import '@/helpers/iview-admin/libs/DatePrototype.js' // 對Date的擴充套件，將 Date 轉化為指定格式的String
 
-// css
-import '@/assets/ivew-admin/icons/iconfont.css'
-// import '@/assets/ivew-admin/index.less'
-// 全局註冊自定義指令
-import importDirective from '@/helpers/iview-admin/directive'
+// // css
+// import '@/assets/ivew-admin/icons/iconfont.css'
+// // import '@/assets/ivew-admin/index.less'
+
+// // 全局註冊自定義指令
+import importDirective from '@/helpers/directive'
 importDirective(Vue)
 // 全局註冊config配置
 import config from '@/helpers/iview-admin/config'

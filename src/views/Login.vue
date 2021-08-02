@@ -13,14 +13,14 @@
         <div class="login-contentL">
           <form>
             <img src="@/assets/img/avatar.svg" />
-            <h2 class="login_titleL">歡迎使用本系統</h2>
+            <h2 class="login_titleL" >歡迎使用本系統</h2>
             <div class="input-div one">
               <div class="i">
                 <i class="fas fa-user"></i>
               </div>
               <div class="div">
                 <h5>登入帳號</h5>
-                <input type="text" class="inputL" />
+                <input type="text" class="inputL" required />
               </div>
             </div>
             <div class="input-div pass">
@@ -29,10 +29,10 @@
               </div>
               <div class="div">
                 <h5>登入密碼</h5>
-                <input type="password" class="inputL" />
+                <input :type="togglePassword" class="inputL" required />
               </div>
             </div>
-            <a href="#">忘記密碼</a>
+            <a href="#" @click="togglePassword = (togglePassword==='password' ? 'text' : 'password')">顯示密碼</a>
             <input type="submit" class="ibtnL" value="login" />
           </form>
         </div>
@@ -42,6 +42,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      togglePassword: 'password'
+    }
+  },
   mounted () {
     const inputs = document.querySelectorAll('.inputL')
 
