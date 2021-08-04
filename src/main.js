@@ -16,7 +16,7 @@ import vuetify from './plugins/vuetify'
 import importDirective from '@/helpers/directive'
 importDirective(Vue)
 // 全局註冊config配置
-import config from '@/helpers/iview-admin/config'
+import config from '@/helpers/config'
 Vue.prototype.$config = config
 // 全局註冊自定義的api工具
 import { apiCall } from '@/helpers/iview-admin/tools/apiCall.js'
@@ -65,6 +65,7 @@ new Vue({
   // },
   created () {
     // setTimeout(() => {
+    // apiCall.post('/Public/RequestVerificationToken').then(res => {
     apiCall.post('/Public/RequestVerificationToken').then(res => {
       window.localStorage.setItem('RequestVerificationToken', res)
     })

@@ -4,6 +4,9 @@ import axios from 'axios'
 // import store from '@/store'
 import qs from 'qs'
 
+import config from '@/helpers/config'
+const baseURL = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
+
 import { apiCall } from '@/helpers/libs/apiCall.js'
 
 // import { Spin } from 'iview'
@@ -20,7 +23,7 @@ import { apiCall } from '@/helpers/libs/apiCall.js'
 
 class HttpRequest {
   constructor (baseUrl = baseURL) {
-    this.baseUrl = baseUrl + 'isms'
+    this.baseUrl = baseUrl + 'api'
     this.queue = {}
   }
 
@@ -38,13 +41,7 @@ class HttpRequest {
     return config
   }
 
- {
-  }
-
- {
-  }
-
- request (options) {
+  async request (options) {
     let instance = axios.create()
 
     instance.defaults.headers['Authorizations'] = await apiCall.post('/Public/gettoken')

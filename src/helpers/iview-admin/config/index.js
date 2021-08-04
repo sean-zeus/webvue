@@ -31,8 +31,8 @@ export default {
     //   developmentOff: false // 設為true後在開發環境不會收集錯誤信息，方便開發中排查錯誤
     // }
   },
-  updateDocsPath: '' + '/isms/docsManage/Update_Docs',
-  downLoadDocsPath: '' + '/isms/DocsManage/Download_Docs/',
+  updateDocsPath: '' + '/api/docsManage/Update_Docs',
+  downLoadDocsPath: '' + '/api/DocsManage/Download_Docs/',
   sysHeighx: document.body.clientHeight,
   paraSetTypeList: [
     // {

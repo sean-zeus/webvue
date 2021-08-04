@@ -2,9 +2,8 @@
 
 import axios from 'axios'
 import qs from 'qs'
-import config from '@/helpers/iview-admin/config'
+import config from '@/helpers/config'
 const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
-
 axios.defaults.timeout = 7000
 // axios.defaults.baseURL = window.document.location.origin // 域名
 axios.defaults.baseURL = baseUrl
@@ -18,11 +17,13 @@ axios.interceptors.request.use(
     // 用來判斷是否為 跨域存取 (cross-site Access-Control requests)
     // 等同 Access-Control-Allow-Credentials 表頭
     // 用來解決 CORS 如果沒有cors的問題則可以都不加
-    config.withCredentials = true// defaul
-    config.headers['Access-Control-Allow-Credentials'] = 'true'
-    config.headers['Access-Control-Allow-Headers'] = '*'
-    config.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080'
-    config.headers['Access-Control-Allow-Methods'] = '*'
+
+    // net core 搞好可以不加才拿掉
+    // config.withCredentials = true// defaul
+    // config.headers['Access-Control-Allow-Credentials'] = 'true'
+    // config.headers['Access-Control-Allow-Headers'] = '*'
+    // config.headers['Access-Control-Allow-Origin'] = 'http://localhost:7628'
+    // config.headers['Access-Control-Allow-Methods'] = '*'
 
     // config.headers['author_izations'] = '?????'
 
@@ -56,7 +57,7 @@ axios.interceptors.response.use(
 
         response = '未授權，請登錄'
         if (window.location.pathname !== '/login') {
-          window.location.href = window.location.origin + '/isms/login'
+          window.location.href = window.location.origin + '/api/login'
         }
 
         break
@@ -70,7 +71,7 @@ axios.interceptors.response.use(
     if (error.message === 'Network Error') {
       error.message = '未授權，請登錄'
       if (window.location.pathname !== '/login') {
-        window.location.href = window.location.origin + '/isms/login'
+        window.location.href = window.location.origin + '/api/login'
       }
     }
     // 異常處理
@@ -79,7 +80,7 @@ axios.interceptors.response.use(
         case 302: // Found
           error.message = '未授權，請登錄'
           if (window.location.pathname !== '/login') {
-            window.location.href = window.location.origin + '/isms/login'
+            window.location.href = window.location.origin + '/api/login'
           }
           break
         case 400:
@@ -96,7 +97,7 @@ axios.interceptors.response.use(
 
           error.message = '未授權，請登錄'
           if (window.location.pathname !== '/login') {
-            window.location.href = window.location.origin + '/isms/login'
+            window.location.href = window.location.origin + '/api/login'
           }
           break
         case 403:
@@ -161,7 +162,7 @@ axios.interceptors.response.use(
 function fetch (url, params = {}) {
   return new Promise((resolve, reject) => {
     axios
-      .get('/isms' + url, {
+      .get('/api' + url, {
         params: params
       })
       .then(response => {
@@ -175,7 +176,7 @@ function fetch (url, params = {}) {
 
 function post (url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.post('/isms' + url, data).then(
+    axios.post('/api' + url, data).then(
       response => {
         if (response.status === 400) {
           // bus.$emit('modelError', x.response.data.modelState);
@@ -194,7 +195,7 @@ function post (url, data = {}) {
 
 function remove (url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.delete('/isms' + url, data).then(
+    axios.delete('/api' + url, data).then(
       response => {
         resolve(response.data)
       },
@@ -207,7 +208,7 @@ function remove (url, data = {}) {
 
 function put (url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.put('/isms' + url, data).then(
+    axios.put('/api' + url, data).then(
       response => {
         resolve(response.data)
       },
@@ -222,7 +223,7 @@ function put (url, data = {}) {
 export const apiCall = {
   fetch: async function (url, paramObj, token = '') {
     // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
+    // axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
     return fetch(url, paramObj)
   },
   post: async function (url, paramObj, token = '') {
