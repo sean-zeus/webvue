@@ -1,28 +1,28 @@
-import axios from '@/libs/api.request'
+import { apiCall } from '@/helpers/apiCall.js'
 
 export const getTableData = () => {
-  return axios.request({
+  return apiCall.fetch({
     url: 'get_table_data',
     method: 'get'
   })
 }
 
 export const getDragList = () => {
-  return axios.request({
+  return apiCall.fetch({
     url: 'get_drag_list',
     method: 'get'
   })
 }
 
 export const errorReq = () => {
-  return axios.request({
+  return apiCall.post({
     url: 'error_url',
     method: 'post'
   })
 }
 
 export const saveErrorLogger = info => {
-  return axios.request({
+  return apiCall.post({
     url: 'save_error_logger',
     data: info,
     method: 'post'

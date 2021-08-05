@@ -14,7 +14,7 @@ module.exports = {
   // outputDir: '../bccs_isms/wwwroot', // 輸出文件目錄 Default: 'dist'
   // assetsDir: '', ////放置生成的靜態資源 (js、css、img、fonts) 的 (相對於 outputDir 的) 目錄。Default: ''
   // indexPath : 'index.html', //指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。Default:'index.html'
-  productionSourceMap: false, // 打包時不生成.map文件(加速打包的速度)
+  // productionSourceMap: false, // 打包時不生成.map文件(加速打包的速度)
   devServer: {
     // host: '127.0.0.1', //(默认值：0.0.0.0)
     port: 5001, // (默认值：8080)

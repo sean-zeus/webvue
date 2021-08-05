@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 // cookie保存的天數
-import config from '@/helpers/config'
+import config from '@/helpers/global_conf.js'
 import { forEach, hasOneOf, objEqual } from '@/helpers/iview-admin/libs/tools'
 
 export const TOKEN_KEY = 'token'

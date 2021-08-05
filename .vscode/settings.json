@@ -68,7 +68,6 @@
   "eslint.validate": [
     "javascript",
     "javascriptreact",
-    "html",
     "vue"
   ],
   //【emmet】

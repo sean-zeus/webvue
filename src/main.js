@@ -15,15 +15,18 @@ import vuetify from './plugins/vuetify'
 // // 全局註冊自定義指令
 import importDirective from '@/helpers/directive'
 importDirective(Vue)
-// 全局註冊config配置
-import config from '@/helpers/config'
-Vue.prototype.$config = config
+
 // 全局註冊自定義的api工具
-import { apiCall } from '@/helpers/iview-admin/tools/apiCall.js'
+import { apiCall } from '@/helpers/apiCall.js'
 Vue.prototype.$apiCall = apiCall
+
+// 全局註冊config配置
+import gconf from '@/helpers/global_conf'
+Vue.prototype.$gconf = gconf
+
 // 將全域性函式當做外掛來進行註冊
 import gfunc from '@/helpers/iview-admin/tools/global_func.js'
-Vue.use(gfunc) // 全局註冊自定義的func工具
+Vue.use(gfunc)
 // ----------------iview-admin-template------------------------------------------------
 
 // // ----------------client_app------------------------------------------------

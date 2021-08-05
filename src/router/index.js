@@ -4,7 +4,7 @@ import routes from './routers.js'
 
 import store from '@/store'
 import { setToken, getToken, canTurnTo } from '@/helpers/iview-admin/libs/util'
-import config from '@/helpers/config'
+import config from '@/helpers/global_conf.js'
 const { homeName } = config
 
 Vue.use(VueRouter)

@@ -1,5 +1,5 @@
-import config from '@/helpers/config'
-const setbaseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
+import config from '@/helpers/global_conf.js'
+const setbaseUrl = process.env.NODE_ENV === 'development' ? config.apiUrl.dev : config.apiUrl.pro
 // const setbaseUrl = window.document.location.origin // 域名
 
 /**
@@ -27,7 +27,7 @@ export const fileToBlobDownload = (url, fileName, type, token) => new Promise((r
   xhr.setRequestHeader('X_XSRF_TOKEN', token)
 
   // CORS
-  xhr.withCredentials = true // defaul
+  xhr.withCredentials = true // defaul
   xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true')
   xhr.setRequestHeader('Access-Control-Allow-Headers', '*')
   xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
@@ -35,7 +35,7 @@ export const fileToBlobDownload = (url, fileName, type, token) => new Promise((r
 
   xhr.responseType = 'blob'
   xhr.onload = function () {
-    if (this.status == 200) {
+    if (this.status === 200) {
       // let allres = this.getAllResponseHeaders()
       // let filenaem = this.getResponseHeader("content-disposition") //'attachment; filename=MultiplePDFs.zip; filename*=UTF-8''MultiplePDFs.zip'
       // 接受二進位制檔案流
@@ -65,7 +65,7 @@ export const fileToBlobDownload = (url, fileName, type, token) => new Promise((r
         window.URL.revokeObjectURL(blobObjectURL)
       }
       resolve(this.response)
-    } else if (this.status == 400) {
+    } else if (this.status === 400) {
       reject(new Error(this.statusText))
     }
   }
@@ -87,7 +87,7 @@ export const fileToBlobPreview = (url, addTagName, type, token) => {
   xhr.setRequestHeader('X_XSRF_TOKEN', token)
 
   // CORS
-  xhr.withCredentials = true // defaul
+  xhr.withCredentials = true // defaul
   xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true')
   xhr.setRequestHeader('Access-Control-Allow-Headers', '*')
   xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
@@ -95,7 +95,7 @@ export const fileToBlobPreview = (url, addTagName, type, token) => {
 
   xhr.responseType = 'blob'
   xhr.onload = function () {
-    if (this.status == 200) {
+    if (this.status === 200) {
       // 接受二進位制檔案流
       // let blob = new Blob([response], { type: 'application/pdf' })
       var blob = this.response

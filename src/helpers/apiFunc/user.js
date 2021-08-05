@@ -1,4 +1,4 @@
-import axios from '@/libs/api.request'
+import { apiCall } from '@/helpers/apiCall.js'
 
 export const login = ({ userStar, userName, password }) => {
   const data = {
@@ -6,7 +6,7 @@ export const login = ({ userStar, userName, password }) => {
     userName,
     password
   }
-  return axios.request({
+  return apiCall.post({
     url: '/login/login',
     data,
     method: 'post'
@@ -14,7 +14,7 @@ export const login = ({ userStar, userName, password }) => {
 }
 
 export const getUserInfo = token => {
-  return axios.request({
+  return apiCall.post({
     url: '/login/get_info',
     // params: {
     //   token
@@ -25,7 +25,7 @@ export const getUserInfo = token => {
 }
 
 export const logout = token => {
-  return axios.request({
+  return apiCall.post({
     url: '/login/logout',
     data: { token },
     method: 'post'

@@ -1,34 +1,41 @@
+// import Cookies from 'js-cookie'
+// Cookies.get('XSRF_TOKEN')
+
 import axios from 'axios'
 import qs from 'qs'
+import config from '@/helpers/global_conf'
 
-import { CONFIG as conf } from './global_conf'
-
-axios.defaults.timeout = 5000
-axios.defaults.baseURL = conf.API_URL // 域名
+const baseUrl = process.env.NODE_ENV === 'development' ? config.apiUrl.dev : config.apiUrl.pro
+axios.defaults.baseURL = baseUrl
+axios.defaults.timeout = 7000
 
 // axios.defaults.headers.common["Authorization"] = AUTH_TOKEN // 设置请求头为 Authorization
-// axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded"
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 
-// http request 欄截
+// request 欄截
 axios.interceptors.request.use(
+  // 這裡的config包含每次請求的內容
   config => {
-    // 用來判斷是否為 跨域存取 (cross-site Access-Control requests)
-    // 等同 Access-Control-Allow-Credentials 表頭
-    // 用來解決 CORS
-    // config.withCredentials = false // defaul
+    // 用來解決 CORS 如果沒有cors的問題則可以都不加
+    // net core 搞好可以不加才拿掉
+    // config.withCredentials = true// defaul
+    // config.headers['Access-Control-Allow-Credentials'] = 'true'
+    // config.headers['Access-Control-Allow-Headers'] = '*'
+    // config.headers['Access-Control-Allow-Origin'] = 'http://localhost:7628'
+    // config.headers['Access-Control-Allow-Methods'] = '*'
+
+    // 送出過程中在data加入物件資料的寫法
+    // Object.assign(config.data, { X_XSRF_TOKEN: Cookies.get('XSRF_TOKEN') })
+    // Object.assign(config.data, { X_XSRF_TOKEN: localStorage.RequestVerificationToken })
 
     config.data = qs.stringify(config.data)
     // config.data = JSON.stringify(config.data)
+
+    // 判斷localStorage中是否存在RequestVerificationToken
     if (localStorage.RequestVerificationToken) {
-      // 存在將api_RequestVerificationToken寫入 request header
-      config.headers.RequestVerificationToken = localStorage.RequestVerificationToken
+      config.headers['X_XSRF_TOKEN'] = localStorage.RequestVerificationToken
     }
-    // config.headers = {
-    //    // 如果沒有cors的問題則可以都不加
-    //    'Access-Control-Allow-Origin': process.env.API_ROOT,
-    //    'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
-    //    'Access-Control-Max-Age': '86400'
-    // }
+
     return config
   },
   error => {
@@ -36,43 +43,59 @@ axios.interceptors.request.use(
   }
 )
 
-// http response 攔截器
+// response 攔截器
 axios.interceptors.response.use(
   response => {
-    return response
+    switch (response) {
+      case 302: // Found
+        // 如果后台返回302，需要跳转到首页，让用户登录
+        // window.location.href = dataAxios.URL
+        // 需要重新登录
 
-    // switch (response) {
-    //    case 302:
-    //       // 如果后台返回302，需要跳转到首页，让用户登录
-    //       window.location.href = dataAxios.URL
-    //       // 需要重新登录
-    //       break
-    //    default:
-    //       return Promise.reject(dataAxios)
-    // }
+        response = '未授權，請登錄'
+        if (window.location.pathname !== '/login') {
+          window.location.href = window.location.origin + '/login'
+        }
+
+        break
+      default:
+        // return Promise.reject(dataAxios)
+        return response
+    }
   },
   error => {
-    // 登入授權處理
-    if (error.response) {
-      switch (error.response.status) {
-        case 401:
-          401
-          // 返回 401 清除token資訊並跳轉到登入頁面
-          store.commit(types.LOGOUT)
-          router.replace({
-            path: 'login',
-            query: { redirect: router.currentRoute.fullPath }
-          })
+    // Form登入用的[.AspNetcore.Cookies]過期登出
+    if (error.message === 'Network Error') {
+      error.message = '未授權，請登錄'
+      if (window.location.pathname !== '/login') {
+        window.location.href = window.location.origin + '/login'
       }
     }
     // 異常處理
     if (error && error.response) {
       switch (error.response.status) {
+        case 302: // Found
+          error.message = '未授權，請登錄'
+          if (window.location.pathname !== '/login') {
+            window.location.href = window.location.origin + '/login'
+          }
+          break
         case 400:
           error.message = '請求錯誤'
           break
         case 401:
+          // 登入授權處理
+          // 返回 401 清除token資訊並跳轉到登入頁面
+          // store.commit(types.LOGOUT)
+          // router.replace({
+          //   path: 'login',
+          //   query: { redirect: router.currentRoute.fullPath }
+          // })
+
           error.message = '未授權，請登錄'
+          if (window.location.pathname !== '/login') {
+            window.location.href = window.location.origin + '/api/login'
+          }
           break
         case 403:
           error.message = '拒絕訪問'
@@ -135,10 +158,7 @@ axios.interceptors.response.use(
 
 function fetch (url, params = {}) {
   return new Promise((resolve, reject) => {
-    axios
-      .get(url, {
-        params: params
-      })
+    axios.get(url, { params: params })
       .then(response => {
         resolve(response.data)
       })
@@ -150,8 +170,8 @@ function fetch (url, params = {}) {
 
 function post (url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.post(url, data).then(
-      response => {
+    axios.post(url, data)
+      .then(response => {
         if (response.status === 400) {
           // bus.$emit('modelError', x.response.data.modelState);
           alert(JSON.stringify(response.data))
@@ -159,37 +179,33 @@ function post (url, data = {}) {
         } else {
           resolve(response.data)
         }
-      },
-      err => {
+      }, err => {
         reject(err)
-      }
-    )
+      })
   })
 }
 
 function remove (url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.delete(url, data).then(
-      response => {
+    axios.delete(url, data)
+      .then(response => {
         resolve(response.data)
       },
       err => {
         reject(err)
-      }
-    )
+      })
   })
 }
 
 function put (url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.put(url, data).then(
-      response => {
+    axios.put(url, data)
+      .then(response => {
         resolve(response.data)
       },
       err => {
         reject(err)
-      }
-    )
+      })
   })
 }
 
@@ -197,22 +213,22 @@ function put (url, data = {}) {
 export const apiCall = {
   fetch: async function (url, paramObj, token = '') {
     // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await fetch('/Public/gettoken')
+    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
     return fetch(url, paramObj)
   },
   post: async function (url, paramObj, token = '') {
     // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await fetch('/Public/gettoken')
+    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
     return post(url, paramObj)
   },
   put: async function (url, paramObj, token = '') {
     // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await fetch('/Public/gettoken')
+    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
     return put(url, paramObj)
   },
   delete: async function (url, paramObj, token = '') {
     // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await fetch('/Public/gettoken')
+    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
     return remove(url, paramObj)
   }
 }

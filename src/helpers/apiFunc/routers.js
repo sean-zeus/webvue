@@ -1,7 +1,7 @@
-import axios from '@/libs/api.request'
+import { apiCall } from '@/helpers/apiCall.js'
 
 export const getRouterReq = (access) => {
-  return axios.request({
+  return apiCall.fetch({
     url: 'get_router',
     params: {
       access

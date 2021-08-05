@@ -1,5 +1,23 @@
+// vscode 配置import @ 路径提示及代码智提
+// 1、安装插件：Path Intellisense
+// 2、配置：
+//     "path-intellisense.mappings": {
+//         "@": "${workspaceRoot}/src"
+//     }
+// 3、在项目package.json所在同级目录下创建文件jsconfig.json：
 {
-    "include": [
-        "./src/**/*"
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules"
     ]
 }
