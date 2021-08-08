@@ -1,4 +1,4 @@
-import { apiCall } from '@/helpers/apiCall.js'
+import { apiCall } from '@/helperLibs/apiFunc/apiCall.js'
 
 export const getTableData = () => {
   return apiCall.fetch({

@@ -1,16 +1,5 @@
-import config from '@/helpers/global_conf.js'
+import config from '@/helperLibs/global_conf.js'
 const setbaseUrl = process.env.NODE_ENV === 'development' ? config.apiUrl.dev : config.apiUrl.pro
-// const setbaseUrl = window.document.location.origin // 域名
-
-/**
- * delay停止幾毫秒
- * @param {Int} interval  ：檔案連結
- */
-export const delayTime = (interval) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, interval)
-  })
-}
 
 /**
  * 檔案連結轉檔案流下載--主要針對pdf 解決谷歌瀏覽器a標籤下載pdf直接開啟的問題
@@ -112,4 +101,33 @@ export const fileToBlobPreview = (url, addTagName, type, token) => {
     }
   }
   xhr.send()
+}
+
+/**
+ * @param {Object} file 從上傳組件得到的文件對象
+ * @returns {Promise} resolve參數是解析後的二維數組
+ * @description 從Csv文件中解析出表格，解析成二維數組
+ */
+export const getArrayFromFile = file => {
+  let nameSplit = file.name.split('.')
+  let format = nameSplit[nameSplit.length - 1]
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader()
+    reader.readAsText(file) // 以文本格式讀取
+    let arr = []
+    reader.onload = function (evt) {
+      let data = evt.target.result // 讀到的數據
+      let pasteData = data.trim()
+      arr = pasteData
+        .split(/[\n\u0085\u2028\u2029]|\r\n?/g)
+        .map(row => {
+          return row.split('\t')
+        })
+        .map(item => {
+          return item[0].split(',')
+        })
+      if (format === 'csv') resolve(arr)
+      else reject(new Error('[Format Error]:你上傳的不是Csv文件'))
+    }
+  })
 }

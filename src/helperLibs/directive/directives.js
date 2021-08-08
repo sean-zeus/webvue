@@ -1,4 +1,4 @@
-import { on } from '@/helpers/iview-admin/libs/tools.js'
+import { on } from '@/helperLibs/iview-admin/tools.js'
 const directives = {
   draggable: {
     inserted: (el, binding, vnode) => {

@@ -3,7 +3,7 @@
 
 import axios from 'axios'
 import qs from 'qs'
-import config from '@/helpers/global_conf'
+import config from '@/helperLibs/global_conf'
 
 const baseUrl = process.env.NODE_ENV === 'development' ? config.apiUrl.dev : config.apiUrl.pro
 axios.defaults.baseURL = baseUrl
@@ -64,14 +64,11 @@ axios.interceptors.response.use(
     }
   },
   error => {
-    // Form登入用的[.AspNetcore.Cookies]過期登出
-    if (error.message === 'Network Error') {
-      error.message = '未授權，請登錄'
-      if (window.location.pathname !== '/login') {
-        window.location.href = window.location.origin + '/login'
-      }
-    }
     // 異常處理
+    if (error.message === 'Network Error') {
+      error.message = '網路連結錯誤!!'
+    }
+    // Form登入用的[.AspNetcore.Cookies]過期登出
     if (error && error.response) {
       switch (error.response.status) {
         case 302: // Found
