@@ -1,6 +1,3 @@
-// import Cookies from 'js-cookie'
-// Cookies.get('XSRF_TOKEN')
-
 import axios from 'axios'
 import qs from 'qs'
 import config from '@/helperLibs/global_conf'
@@ -9,147 +6,34 @@ const baseUrl = process.env.NODE_ENV === 'development' ? config.apiUrl.dev : con
 axios.defaults.baseURL = baseUrl
 axios.defaults.timeout = 7000
 
-// axios.defaults.headers.common["Authorization"] = AUTH_TOKEN // 设置请求头为 Authorization
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// 用來解決 CORS 如果沒有cors的問題則可以都不加
+// config.withCredentials = true// defaul
+// config.headers.common['Access-Control-Allow-Credentials'] = 'true'
+// config.headers.common['Access-Control-Allow-Headers'] = '*'
+// config.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:7628'
+// config.headers.common['Access-Control-Allow-Methods'] = '*'
 
-// request 欄截
-axios.interceptors.request.use(
+// 判斷localStorage中是否存在WEB.XCSRF
+if (localStorage['WEB.XCSRF']) {
+  axios.defaults.headers.common['WEB.XCSRF'] = localStorage.getItem('WEB.XCSRF') || ''
+}
+
+axios.interceptors.request.use(// request 欄截
   // 這裡的config包含每次請求的內容
   config => {
-    // 用來解決 CORS 如果沒有cors的問題則可以都不加
-    // net core 搞好可以不加才拿掉
-    // config.withCredentials = true// defaul
-    // config.headers['Access-Control-Allow-Credentials'] = 'true'
-    // config.headers['Access-Control-Allow-Headers'] = '*'
-    // config.headers['Access-Control-Allow-Origin'] = 'http://localhost:7628'
-    // config.headers['Access-Control-Allow-Methods'] = '*'
-
-    // 送出過程中在data加入物件資料的寫法
-    // Object.assign(config.data, { X_XSRF_TOKEN: Cookies.get('XSRF_TOKEN') })
-    // Object.assign(config.data, { X_XSRF_TOKEN: localStorage.RequestVerificationToken })
-
-    config.data = qs.stringify(config.data)
-    // config.data = JSON.stringify(config.data)
-
-    // 判斷localStorage中是否存在RequestVerificationToken
-    if (localStorage.RequestVerificationToken) {
-      config.headers['X_XSRF_TOKEN'] = localStorage.RequestVerificationToken
+    // config.data不為空且application/x-www-form-urlencoded才需要編碼
+    if (Object.keys(config.data).length !== 0 && config.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+      config.data = qs.stringify(config.data) // qs.parse()将URL解析成对象的形式、qs.stringify()編碼成UrlQuery
+      // config.data = JSON.stringify(config.data)// 編碼成Json
     }
 
+    if (localStorage['WEB.Token']) {
+      axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('WEB.Token') || ''}`
+    }
+
+    // 送出過程中在data在加入物件資料的寫法
+    // Object.assign(config.data, { 'sfsfsaf': 'sfsfs'})
     return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
-
-// response 攔截器
-axios.interceptors.response.use(
-  response => {
-    switch (response) {
-      case 302: // Found
-        // 如果后台返回302，需要跳转到首页，让用户登录
-        // window.location.href = dataAxios.URL
-        // 需要重新登录
-
-        response = '未授權，請登錄'
-        if (window.location.pathname !== '/login') {
-          window.location.href = window.location.origin + '/login'
-        }
-
-        break
-      default:
-        // return Promise.reject(dataAxios)
-        return response
-    }
-  },
-  error => {
-    // 異常處理
-    if (error.message === 'Network Error') {
-      error.message = '網路連結錯誤!!'
-    }
-    // Form登入用的[.AspNetcore.Cookies]過期登出
-    if (error && error.response) {
-      switch (error.response.status) {
-        case 302: // Found
-          error.message = '未授權，請登錄'
-          if (window.location.pathname !== '/login') {
-            window.location.href = window.location.origin + '/login'
-          }
-          break
-        case 400:
-          error.message = '請求錯誤'
-          break
-        case 401:
-          // 登入授權處理
-          // 返回 401 清除token資訊並跳轉到登入頁面
-          // store.commit(types.LOGOUT)
-          // router.replace({
-          //   path: 'login',
-          //   query: { redirect: router.currentRoute.fullPath }
-          // })
-
-          error.message = '未授權，請登錄'
-          if (window.location.pathname !== '/login') {
-            window.location.href = window.location.origin + '/api/login'
-          }
-          break
-        case 403:
-          error.message = '拒絕訪問'
-          break
-        case 404:
-          error.message = `請求地址不存在: ${error.response.config.url}`
-          break
-        case 408:
-          error.message = '請求超時'
-          break
-        case 500:
-          error.message = '服務器內部錯誤'
-          break
-        case 501:
-          error.message = '服務未實現'
-          break
-        case 502:
-          error.message = '連線錯誤'
-          break
-        case 503:
-          error.message = '服務不可用'
-          break
-        case 504:
-          error.message = '連線超時'
-          break
-        case 505:
-          break
-        default:
-          error.message = `連接錯誤${error.response.status}`
-          break
-      }
-    }
-    console.log(error.message)
-    return Promise.reject(error)
-
-    // //原來的寫法
-    // if (error && error.response) {
-    //    switch (error.response.status) {
-    //       case 400:
-    //          console.log('資料驗證錯誤')
-    //          break
-    //       case 404:
-    //          console.log('找不到該頁面')
-    //          break
-    //       case 500:
-    //          console.log('伺服器出錯')
-    //          break
-    //       case 503:
-    //          console.log('服務失效')
-    //          break
-    //       default:
-    //          console.log(`連接錯誤${error.response.status}`)
-    //    }
-    // } else {
-    //    console.log('連接到服務器失敗')
-    // }
-    // return Promise.resolve(error.response)
   }
 )
 
@@ -165,14 +49,15 @@ function fetch (url, params = {}) {
   })
 }
 
-function post (url, data = {}) {
+function post (url, data = {}, ContentType = 'form') {
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    ContentType = ContentType === 'form' ? 'application/x-www-form-urlencoded' : 'application/json;charset=utf-8'
+    axios.post(url, data, { headers: { 'Content-Type': ContentType } })
       .then(response => {
         if (response.status === 400) {
-          // bus.$emit('modelError', x.response.data.modelState);
+        // bus.$emit('modelError', x.response.data.modelState);
           alert(JSON.stringify(response.data))
-          // resolve(response.data);
+        // resolve(response.data);
         } else {
           resolve(response.data)
         }
@@ -182,9 +67,10 @@ function post (url, data = {}) {
   })
 }
 
-function remove (url, data = {}) {
+function remove (url, data = {}, ContentType = 'form') {
   return new Promise((resolve, reject) => {
-    axios.delete(url, data)
+    ContentType = ContentType === 'form' ? 'application/x-www-form-urlencoded' : 'application/json;charset=utf-8'
+    axios.delete(url, data, { headers: { 'Content-Type': ContentType } })
       .then(response => {
         resolve(response.data)
       },
@@ -194,9 +80,10 @@ function remove (url, data = {}) {
   })
 }
 
-function put (url, data = {}) {
+function put (url, data = {}, ContentType = 'form') {
   return new Promise((resolve, reject) => {
-    axios.put(url, data)
+    ContentType = ContentType === 'form' ? 'application/x-www-form-urlencoded' : 'application/json;charset=utf-8'
+    axios.put(url, data, { headers: { 'Content-Type': ContentType } })
       .then(response => {
         resolve(response.data)
       },
@@ -208,24 +95,20 @@ function put (url, data = {}) {
 
 // 將封裝的方法打包起來
 export const apiCall = {
-  fetch: async function (url, paramObj, token = '') {
-    // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
+  fetch: async function (url, paramObj) {
+    axios.defaults.headers['AuthTimeStamp'] = await post('/Public/GetTimeStamp')
     return fetch(url, paramObj)
   },
-  post: async function (url, paramObj, token = '') {
-    // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
-    return post(url, paramObj)
+  post: async function (url, paramObj, ContentType = 'form') {
+    axios.defaults.headers['AuthTimeStamp'] = await post('/Public/GetTimeStamp')
+    return post(url, paramObj, ContentType)
   },
-  put: async function (url, paramObj, token = '') {
-    // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
-    return put(url, paramObj)
+  put: async function (url, paramObj, ContentType = 'form') {
+    axios.defaults.headers['AuthTimeStamp'] = await post('/Public/GetTimeStamp')
+    return put(url, paramObj, ContentType)
   },
-  delete: async function (url, paramObj, token = '') {
-    // axios.defaults.headers['RequestVerificationToken'] = token
-    axios.defaults.headers['Authorizations'] = await post('/Public/gettoken')
-    return remove(url, paramObj)
+  delete: async function (url, paramObj, ContentType = 'form') {
+    axios.defaults.headers['AuthTimeStamp'] = await post('/Public/GetTimeStamp')
+    return remove(url, paramObj, ContentType)
   }
 }

@@ -20,7 +20,7 @@
               </div>
               <div class="div">
                 <h5>登入帳號</h5>
-                <input type="text" class="inputL" required />
+                <input type="text" class="inputL" required autofocus v-model="form.userName" id="text1" @keyup.enter.prevent="keyTab($event)" autocomplete="off"/>
               </div>
             </div>
             <div class="input-div pass">
@@ -29,11 +29,11 @@
               </div>
               <div class="div">
                 <h5>登入密碼</h5>
-                <input :type="togglePassword" class="inputL" required />
+                <input :type="togglePassword" class="inputL" required v-model="form.password" id="text2" @keyup.enter="submitLogin"/>
               </div>
             </div>
             <a href="#" @click="togglePassword = (togglePassword==='password' ? 'text' : 'password')">顯示密碼</a>
-            <input type="submit" class="ibtnL" value="login" />
+            <input class="ibtnL" value="登入系統" @click="submitLogin" />
           </form>
         </div>
       </div>
@@ -44,18 +44,47 @@
 export default {
   data () {
     return {
-      togglePassword: 'password'
+      togglePassword: 'password',
+      form: {
+        userName: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    submitLogin () {
+      // this.$Spin.show()
+      this.$store.dispatch('handleLogin', { userName: this.form.userName, password: this.form.password })
+        .then(res => {
+          if (res === '登入完成') {
+            this.$store.dispatch('getUserInfo').then(data => {
+              this.$router.push({
+                name: this.$gconf.homeName
+              })
+            })
+          }
+          // setTimeout(() => this.$Spin.hide(), 1000)
+        })
+        .catch(error => {
+          // setTimeout(() => this.$Spin.hide(), 1000)
+          console.log(error.response == null ? error : error.response.data)
+        })
+    },
+    keyTab (event) {
+      let _txt2 = document.getElementById('text2')
+      _txt2.focus()
+      _txt2.select()
     }
   },
   mounted () {
     const inputs = document.querySelectorAll('.inputL')
 
-    function addcl () {
+    function addcFocus () {
       const parent = this.parentNode.parentNode
       parent.classList.add('focus')
     }
 
-    function remcl () {
+    function remcFocus () {
       const parent = this.parentNode.parentNode
       if (this.value === '') {
         parent.classList.remove('focus')
@@ -63,8 +92,8 @@ export default {
     }
 
     inputs.forEach(input => {
-      input.addEventListener('focus', addcl)
-      input.addEventListener('blur', remcl)
+      input.addEventListener('focus', addcFocus)
+      input.addEventListener('blur', remcFocus)
     })
   }
 }
@@ -245,6 +274,7 @@ a:hover {
   background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
   background-size: 200%;
   font-size: 1.2rem;
+  text-align: center;
   color: #fff;
   text-transform: uppercase;
   margin: 1rem 0;

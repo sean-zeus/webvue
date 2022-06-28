@@ -9,7 +9,7 @@ import vuetify from './plugins/vuetify'
 // import '@/assets/icons/iconfont.css'
 // import '@/assets/my.css'
 
-// 對Date的擴充套件，將 Date 轉化為指定格式的String
+// // Date 轉化為指定格式的String
 // import '@/helperLibs/jsPrototype/date.js'
 
 // // 全局註冊自定義指令
@@ -28,35 +28,25 @@ Vue.prototype.$gconf = gconf
 import gfunc from '@/helperLibs/global_func.js'
 Vue.use(gfunc)
 
-import axios from 'axios'
-import fs from 'fs'
-
-// 获取远端图片
-axios({
-  method: 'get',
-  url: 'http://bit.ly/2mTM3nY',
-  responseType: 'stream'
-}).then(function (response) {
-  debugger
-  response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
-})
+// // 获取远端图片
+// import axios from 'axios'
+// import fs from 'fs'
+// axios({
+//   method: 'get',
+//   url: 'https://lh3.googleusercontent.com/iXmJ9aWblkGDpg-_jpcqaY10KmA8HthjZ7F15U7mJ9PQK6vZEStMlathz1FfQQWV5XeeF-A1tZ0UpDjx3q6vEm2BWZn5k1btVSuBk9ad=s660',
+//   responseType: 'stream'
+// }).then(function (response) {
+//   debugger
+//   response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+// })
 
 Vue.config.productionTip = false // 生產環境關掉提示
 
 new Vue({
-  // async created () {
-  //   window.localStorage.setItem('RequestVerificationToken', await apiCall.fetch('/Public/RequestVerificationToken'))
-  //   // console.log(window.localStorage.getItem('RequestVerificationToken') || '')
-  // },
   created () {
-    // setTimeout(() => {
-    // apiCall.post('/Public/RequestVerificationToken').then(res => {
-    apiCall.post('/Public/RequestVerificationToken').then(res => {
-      window.localStorage.setItem('RequestVerificationToken', res)
+    apiCall.post('/Public/GetWEB_XCSRF_Token').then(res => {
+      window.localStorage.setItem('WEB.XCSRF', res)
     })
-    // }).catch(err => {
-    //   console.log(err)
-    // }, 1000)
   },
   router,
   store,

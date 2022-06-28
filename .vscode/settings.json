@@ -37,8 +37,7 @@
   //配置換行提醒垂直标尺長度
   "editor.rulers": [
     180
-  ],
-  "editor.renderIndentGuides": true, // 開啟縮排導引線
+  ], // 開啟縮排導引線
   "editor.fontSize": 16, //設置文字大小
   "editor.lineHeight": 24, //設置文字行高
   "editor.lineNumbers": "on", //開啟行數提示

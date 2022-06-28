@@ -1,33 +1,14 @@
 import { apiCall } from '@/helperLibs/apiFunc/apiCall.js'
+import config from '@/helperLibs/global_conf'
 
-export const login = ({ userStar, userName, password }) => {
-  const data = {
-    userStar,
-    userName,
-    password
-  }
-  return apiCall.post({
-    url: '/login/login',
-    data,
-    method: 'post'
-  })
+export const loginAPI = ({ userName, password }) => {
+  return apiCall.post(config.loginAPI, { userName, password })
 }
 
-export const getUserInfo = token => {
-  return apiCall.post({
-    url: '/login/get_info',
-    // params: {
-    //   token
-    // },
-    data: { token },
-    method: 'post'
-  })
+export const logoutAPI = token => {
+  return apiCall.post(config.logoutAPI, { token })
 }
 
-export const logout = token => {
-  return apiCall.post({
-    url: '/login/logout',
-    data: { token },
-    method: 'post'
-  })
+export const getUserInfoAPI = token => {
+  return apiCall.post(config.UserInfoAPI, { token })
 }

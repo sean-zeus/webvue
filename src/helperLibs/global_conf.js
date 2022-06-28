@@ -23,7 +23,11 @@ export default {
     dev: 'https://static.xxxx.xxx/',
     pro: 'https://static.xxxx.xxx/'
   },
-  homeName: 'home', // 默認打開的首頁的路由name值，默認為home
+  homeName: 'Home', // 默認打開的首頁的路由name值，默認為home
+  loginName: 'Login', // 默認打開的登入頁的路由name值，默認為login
+  loginAPI: '/JwtAuth/SignIn', // 默認登入API路徑，默認為/login/login
+  logoutAPI: '/JwtAuth/logout', // 默認登入API路徑，默認為/login/logout
+  UserInfoAPI: '/JwtAuth/GetUserInfo', // 默認登入API路徑，默認為/login/GetUserInfo
   plugin: {
     // 需要加載的插件
     'error-store': {

@@ -13,7 +13,7 @@ export const fileToBlobDownload = (url, fileName, type, token) => new Promise((r
   xhr.open('post', setbaseUrl + '.' + url, true)
 
   xhr.setRequestHeader('Content-Type', `application/${type}`)
-  xhr.setRequestHeader('X_XSRF_TOKEN', token)
+  xhr.setRequestHeader('WEB.XCSRF', token)
 
   // CORS
   xhr.withCredentials = true // defaul
@@ -73,7 +73,7 @@ export const fileToBlobPreview = (url, addTagName, type, token) => {
   xhr.open('post', setbaseUrl + '.' + url, true)
 
   xhr.setRequestHeader('Content-Type', `application/${type}`)
-  xhr.setRequestHeader('X_XSRF_TOKEN', token)
+  xhr.setRequestHeader('WEB.XCSRF', token)
 
   // CORS
   xhr.withCredentials = true // defaul
