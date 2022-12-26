@@ -3,9 +3,9 @@ import VueRouter from 'vue-router'
 import routes from './routers.js'
 
 import store from '@/store'
-import { canTurnTo } from '@/helperLibs/iview-admin/util'
-import { setToken, getToken } from '@/helperLibs/tools/localStorage'
-import config from '@/helperLibs/global_conf.js'
+import { canTurnTo } from '/../ExtenFunc/iview-admin/util'
+import { setToken, getToken } from '/../ExtenFunc/tools/localStorage'
+import config from '/../ExtenFunc/global_conf.js'
 
 Vue.use(VueRouter)
 

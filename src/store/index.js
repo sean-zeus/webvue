@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { loginAPI, logoutAPI, getUserInfoAPI } from '@/helperLibs/apiFunc/user.js'
-import { setToken, getToken } from '@/helperLibs/tools/localStorage'
+import { loginAPI, logoutAPI, getUserInfoAPI } from '/../ExtenFunc/apiFunc/user.js'
+import { setToken, getToken } from '/../ExtenFunc/tools/localStorage'
 
 Vue.use(Vuex)
 
@@ -22,29 +22,29 @@ export default new Vuex.Store({
     ProjectId: 0
   },
   mutations: {
-    setAvator (state, avatorPath) {
+    setAvator(state, avatorPath) {
       state.avatorImgPath = avatorPath
     },
-    setUserId (state, id) {
+    setUserId(state, id) {
       state.userId = id
     },
-    setUserName (state, name) {
+    setUserName(state, name) {
       state.userName = name
     },
-    setAccess (state, access) {
+    setAccess(state, access) {
       state.access = access
     },
-    setToken (state, token) {
+    setToken(state, token) {
       state.token = token
       setToken(token)
     },
-    setHasGetInfo (state, status) {
+    setHasGetInfo(state, status) {
       state.hasGetInfo = status
     }
   },
   actions: {
     // 登錄
-    handleLogin ({ commit }, { userName, password }) {
+    handleLogin({ commit }, { userName, password }) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
         loginAPI({
@@ -61,7 +61,7 @@ export default new Vuex.Store({
       })
     },
     // 退出登錄
-    handleLogOut ({ state, commit }) {
+    handleLogOut({ state, commit }) {
       return new Promise((resolve, reject) => {
         logoutAPI(state.token)
           .then(() => {
@@ -79,7 +79,7 @@ export default new Vuex.Store({
       })
     },
     // 獲取用戶相關信息
-    getUserInfo ({ state, commit }) {
+    getUserInfo({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
           getUserInfoAPI(state.token)

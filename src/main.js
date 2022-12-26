@@ -10,22 +10,22 @@ import vuetify from './plugins/vuetify'
 // import '@/assets/my.css'
 
 // // Date 轉化為指定格式的String
-// import '@/helperLibs/jsPrototype/date.js'
+// import '/../ExtenFunc/jsPrototype/date.js'
 
 // // 全局註冊自定義指令
-import importDirective from '@/helperLibs/directive'
+import importDirective from '/../ExtenFunc/directive'
 importDirective(Vue)
 
 // 全局註冊自定義的api工具
-import { apiCall } from '@/helperLibs/apiFunc/apiCall.js'
+import { apiCall } from '/../ExtenFunc/apiFunc/apiCall.js'
 Vue.prototype.$apiCall = apiCall
 
 // 全局註冊config配置
-import gconf from '@/helperLibs/global_conf'
+import gconf from '/../ExtenFunc/global_conf.js'
 Vue.prototype.$gconf = gconf
 
 // 將全域性函式當做外掛來進行註冊
-import gfunc from '@/helperLibs/global_func.js'
+import gfunc from '/../ExtenFunc/global_func.js'
 Vue.use(gfunc)
 
 // // 获取远端图片
@@ -43,7 +43,7 @@ Vue.use(gfunc)
 Vue.config.productionTip = false // 生產環境關掉提示
 
 new Vue({
-  created () {
+  created() {
     apiCall.post('/Public/GetWEB_XCSRF_Token').then(res => {
       window.localStorage.setItem('WEB.XCSRF', res)
     })
